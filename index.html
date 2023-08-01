@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guessing game 🤢</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      color: white;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(120deg, blue, red);
+    }
+
+    .card {
+      max-width: 500px;
+      padding: 10px 12px;
+      border: 2px solid #ddd;
+      background: transparent;
+      border-radius: 10px;
+    }
+
+    .card-header {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+      text-align: center;
+    }
+
+    .card-body {
+      padding: 10px 0;
+    }
+
+    .card-body form input {
+      background: none;
+      border: none;
+      outline: none;
+      margin-bottom: 5px;
+      width: 70%;
+      color: white;
+      padding: 5px 8px;
+      backdrop-filter: blur(15px);
+      background-color: rgba(255, 255, 255, 0.195);
+      border: 1px solid rgba(255, 255, 255, 0.156);
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      font-size: 0.8rem;
+      margin-right: -5px;
+    }
+
+    .card-body form input::placeholder {
+      color: #ddd;
+    }
+
+    .card-body form button {
+      font-size: 0.8rem;
+      background: none;
+      border: none;
+      outline: none;
+      margin-bottom: 5px;
+      width: 28%;
+      color: white;
+      padding: 5px 8px;
+      backdrop-filter: blur(15px);
+      background-color: rgba(54, 49, 49, 0.863);
+      border: 1px solid rgba(255, 255, 255, 0.156);
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      cursor: pointer;
+
+      border-left: none;
+    }
+
+    .card-footer {
+      margin-top: 10px;
+      border-top: 1px solid #ddd;
+      padding-top: 5px;
+      padding: 10px 0;
+    }
+
+    .one {
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    #attempts-div {
+      font-size: 0.8rem;
+      text-align: right;
+      padding-right: 10px;
+      margin-bottom: 5px;
+    }
+
+    .win {
+      color: rgb(0, 255, 0);
+    }
+
+    .lose {
+      color: rgb(255, 102, 102);
+    }
+  </style>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <h3>🤢 Guessing game 🤢</h3>
+      </div>
+      <div class="card-body">
+        <form id="form">
+          <input
+            type="number"
+            id="guessField"
+            min="1"
+            max="5"
+            placeholder="Nnumber between 1 to 5"
+            required
+          />
+          <button id="btn" type="submit">Submit</button>
+        </form>
+        <div id="attempts-div"><span id="attempts"></span>attempts left</div>
+        <div id="outPutDiv"></div>
+      </div>
+      <div class="card-footer">
+        <span class="one"><strong>To:</strong> Simum Al Tawsin </span><br />
+        <span><strong>From:</strong> Abdullah Al Noman </span>
+      </div>
+    </div>
+    <script>
+      const input = document.querySelector("#guessField"),
+        form = document.querySelector("#form"),
+        outputField = document.querySelector("#outPutDiv"),
+        attemptsField = document.querySelector("#attempts");
+      let attempts = 5;
+      attemptsField.innerHTML = attempts + " ";
+
+      const playGame = () => {
+        attempts--;
+
+        attemptsField.innerHTML = attempts + " ";
+
+        const randomNumber = Math.floor(Math.random() * 5) + 1;
+
+        if (input.value == randomNumber) {
+          const p = document.createElement("p");
+          const node = document.createTextNode("You have won");
+          p.appendChild(node);
+          p.classList.add("win");
+          outputField.appendChild(p);
+        } else {
+          const p = document.createElement("p");
+          const node = document.createTextNode(
+            `You have Lost.The number is ${randomNumber}`
+          );
+          p.appendChild(node);
+          p.classList.add("lose");
+          outputField.appendChild(p);
+        }
+
+        input.value = "";
+      };
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (attempts == 0) {
+          const gameStartAgain = confirm(
+            "No more attempts.confirm to play againg ?"
+          );
+          if (gameStartAgain) {
+            outputField.innerHTML = "";
+            return (attempts = 5), (attemptsField.innerHTML = attempts + " ");
+          } else {
+            return;
+          }
+        }
+
+        playGame();
+
+        setTimeout(() => {
+          if (attempts == 0) {
+            const gameStartAgain = confirm(
+              "Out of attempts.confirm to play againg ?"
+            );
+            if (gameStartAgain) {
+              outputField.innerHTML = "";
+              return (attempts = 5), (attemptsField.innerHTML = attempts + " ");
+            }
+          }
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
